@@ -1,0 +1,4 @@
+::ffff:127.0.0.1 - - [06/Apr/2023:23:16:15 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:107.0) Gecko/20100101 Firefox/107.0"
+::ffff:127.0.0.1 - - [06/Apr/2023:23:16:20 +0000] "GET /movies HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:107.0) Gecko/20100101 Firefox/107.0"
+::ffff:127.0.0.1 - - [06/Apr/2023:23:16:28 +0000] "GET /documentation HTTP/1.1" 404 152 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:107.0) Gecko/20100101 Firefox/107.0"
+::ffff:127.0.0.1 - - [06/Apr/2023:23:16:42 +0000] "GET /documentation.html HTTP/1.1" 200 238 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:107.0) Gecko/20100101 Firefox/107.0"
