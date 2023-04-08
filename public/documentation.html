@@ -4,8 +4,128 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Documentation</title>
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
     </head>
     <body>
-    
+        <div id="GetAllMovies" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Get a list of all movies in the database</h2>
+                <h3 class="endpoint-url">/movies &emsp;Method: GET</h3>
+            </div>
+            <div class="response">
+                <h4>JSON Response:</h4>
+                {<br>
+                &emsp;movie1: [],<br>
+                &emsp;movie2: [],<br>
+                &emsp;...<br>
+                }<br>
+            </div>
+        </div>
+        <div id="GetFavoriteMovies" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Get a list of all movies marked as favorites</h2>
+                <h3 class="endpoint-url">/movies/favorites &emsp;Method: GET</h3>
+            </div>
+            <div class="response">
+                <h4>JSON Response:</h4>
+                {<br>
+                &emsp;movie1: [],<br>
+                &emsp;movie2: [],<br>
+                &emsp;...<br>
+                }<br>
+            </div>
+        </div>
+        <div id="GetMovieData" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Get data about a specific movie</h2>
+                <h3 class="endpoint-url">/movies<span class="italic">/title</span> &emsp;Method: GET</h3>
+            </div>
+            <div class="response">
+                <h4>JSON Response:</h4>
+                {<br>
+                &emsp;title: "",<br>
+                &emsp;director: "",<br>
+                &emsp;rating: "",<br>
+                &emsp;genre: "",<br>
+                &emsp;...<br>
+                }<br>
+            </div>
+        </div>
+        <div id="GetGenreData" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Get data about a movie gen</span>re</h2>
+                <h3 class="endpoint-url">/genres<span class="italic">/name</span> &emsp;Method: GET</h3>
+            </div>
+            <div class="response">
+                <h4>JSON Response:</h4>
+                {<br>
+                &emsp;title: "",<br>
+                &emsp;description: "",<br>
+                &emsp;...<br>
+                }<br>
+            </div>
+        </div>
+        <div id="GetDirectorData" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Get data about a director</h2>
+                <h3 class="endpoint-url">/directors<span class="italic">/name</span> &emsp;Method: GET</h3>
+            </div>
+            <div class="response">
+                <h4>JSON Response:</h4>
+                {<br>
+                &emsp;name: "",<br>
+                &emsp;bio: "",<br>
+                &emsp;birthdate: "",<br>
+                &emsp;...<br>
+                }<br>
+            </div>
+        </div>
+        <div id="RegisterUser" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Serve the interface to register as a new user</h2>
+                <h3 class="endpoint-url">/users/register &emsp;Method: GET</h3>
+            </div>
+        </div>
+        <div id="UpdateUser" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Serve the interface to update User Data</h2>
+                <h3 class="endpoint-url">/users/update &emsp;Method: GET</h3>
+            </div>
+            <div class="response">
+                <h4>JSON Response:</h4>
+                {<br>
+                &emsp;userid: "",<br>
+                &emsp;newdata...<br>
+                }<br>
+            </div>
+        </div>
+        <div id="RemoveUser" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Serve the interface to deregister as a user</h2>
+                <h3 class="endpoint-url">/users/deregister &emsp;Method: GET</h3>
+            </div>
+        </div>
+        <div id="AddMovieToFavorites" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Add a movie to your favorites list</h2>
+                <h3 class="endpoint-url">/movies/favorites/add<span class="italic">/title</span> &emsp;Method: POST</h3>
+            </div>
+            <div class="response">
+                <h4>JSON Response:</h4>
+                {<br>
+                &emsp;title: "",<br>
+                &emsp;director: "",<br>
+                &emsp;rating: "",<br>
+                &emsp;genre: "",<br>
+                &emsp;...<br>
+                }<br>
+            </div>
+        </div>
+        <div id="RemoveFromFavorites" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Remove a movie from your favorites list</h2>
+                <h3 class="endpoint-url">/movies/favorites/remove<span class="italic">/title</span> &emsp;Method: DELETE</h3>
+            </div>
+        </div>
     </body>
 </html>
