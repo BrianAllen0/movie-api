@@ -51,15 +51,15 @@
 
 .doc-container {
     margin: 1rem;
-    background-color: bisque;
-    border: 1px solid burlywood;
+    background-color: #b3b3b3;
+    border: 1px solid #000000;
     border-radius: 1rem;
     padding: 0.1rem 1rem;
     
 }
 
 .response {
-    background-color: rgb(235, 210, 180);
+    background-color: #d1d1d1;
     padding: 0.5rem 1rem;
     margin: 0.5rem;
     border-radius: 1rem;
