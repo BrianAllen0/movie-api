@@ -1,6 +1,52 @@
+* {
+    box-sizing: border-box;
+    
+}
 
 .italic {
     font-style: italic;
+}
+
+.margin-bottom-small {
+    margin-bottom: 1rem;
+}
+
+.margin-right-small {
+    margin-right: 1rem;
+}
+
+.margin-left-small {
+    margin-right: 1rem;
+}
+
+.margin-top-small {
+    margin-right: 1rem;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-right {
+    justify-content: right;
+    text-align: right;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.general-button {
+    color: black;
+    border: 1px solid black;
+    border-radius: 0.3rem;
+    margin: 0.2rem;
 }
 
 .doc-container {
@@ -31,4 +77,27 @@ h4 {
 
 .endpoint-description {
     font-weight: bold;
+}
+
+.user-login-buttons {
+    display: flex;
+    flex-direction: row;
+    
+}
+
+#user-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5rem;
+    justify-content: center; 
+    margin-left: 30%;
+    margin-right: 30%;
+    border: 1px solid #000000;
+    background-color: #b3b3b3;
+    padding: 3rem;
+    border-radius: 0.3rem;
+}
+
+.user-login-info {
+    
 }
