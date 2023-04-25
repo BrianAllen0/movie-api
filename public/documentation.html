@@ -38,7 +38,7 @@
         <div id="GetMovieData" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Get data about a specific movie</h2>
-                <h3 class="endpoint-url">/movies<span class="italic">/title</span> &emsp;Method: GET</h3>
+                <h3 class="endpoint-url">/movies/title &emsp;Method: GET</h3>
             </div>
             <div class="response">
                 <h4>JSON Response:</h4>
@@ -53,8 +53,8 @@
         </div>
         <div id="GetGenreData" class="doc-container">
             <div class="doc-header">
-                <h2 class="endpoint-description">Get data about a movie gen</span>re</h2>
-                <h3 class="endpoint-url">/genres<span class="italic">/name</span> &emsp;Method: GET</h3>
+                <h2 class="endpoint-description">Get data about a movie genre</h2>
+                <h3 class="endpoint-url">/genres/name &emsp;Method: GET</h3>
             </div>
             <div class="response">
                 <h4>JSON Response:</h4>
@@ -68,7 +68,7 @@
         <div id="GetDirectorData" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Get data about a director</h2>
-                <h3 class="endpoint-url">/directors<span class="italic">/name</span> &emsp;Method: GET</h3>
+                <h3 class="endpoint-url">/directors/name &emsp;Method: GET</h3>
             </div>
             <div class="response">
                 <h4>JSON Response:</h4>
@@ -80,35 +80,10 @@
                 }<br>
             </div>
         </div>
-        <div id="RegisterUser" class="doc-container">
-            <div class="doc-header">
-                <h2 class="endpoint-description">Serve the interface to register as a new user</h2>
-                <h3 class="endpoint-url">/users/register &emsp;Method: GET</h3>
-            </div>
-        </div>
-        <div id="UpdateUser" class="doc-container">
-            <div class="doc-header">
-                <h2 class="endpoint-description">Serve the interface to update User Data</h2>
-                <h3 class="endpoint-url">/users/update &emsp;Method: GET</h3>
-            </div>
-            <div class="response">
-                <h4>JSON Response:</h4>
-                {<br>
-                &emsp;userid: "",<br>
-                &emsp;newdata...<br>
-                }<br>
-            </div>
-        </div>
-        <div id="RemoveUser" class="doc-container">
-            <div class="doc-header">
-                <h2 class="endpoint-description">Serve the interface to deregister as a user</h2>
-                <h3 class="endpoint-url">/users/deregister &emsp;Method: GET</h3>
-            </div>
-        </div>
         <div id="AddMovieToFavorites" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Add a movie to your favorites list</h2>
-                <h3 class="endpoint-url">/movies/favorites/add<span class="italic">/title</span> &emsp;Method: POST</h3>
+                <h3 class="endpoint-url">/movies/favorites/add/title &emsp;Method: POST</h3>
             </div>
             <div class="response">
                 <h4>JSON Response:</h4>
@@ -121,10 +96,16 @@
                 }<br>
             </div>
         </div>
+        <div id="UserPage" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Serve the interface to register, deregister, login, and update your user account.</h2>
+                <h3 class="endpoint-url">/userpage &emsp;Method: GET</h3>
+            </div>
+        </div>
         <div id="RemoveFromFavorites" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Remove a movie from your favorites list</h2>
-                <h3 class="endpoint-url">/movies/favorites/remove<span class="italic">/title</span> &emsp;Method: DELETE</h3>
+                <h3 class="endpoint-url">/movies/favorites/remove/title &emsp;Method: DELETE</h3>
             </div>
         </div>
     </body>

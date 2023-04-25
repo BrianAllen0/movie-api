@@ -39,16 +39,8 @@ app.get('/directors/:name', (req,res) => {
     res.status(200).send(director + '? Never heard of them.');
 });
 
-app.get('/users/register', (req,res) => {
-    res.status(200).send('Thank you for your interest in my site! Unfortunately it\'s just a skeleton right now!');
-});
-
-app.get('/users/update', (req,res) => {
-    res.status(200).send('My site isn\'t ready yet, so I\'m pretty sure you\'re not a user.');
-});
-
-app.get('/users/deregister', (req,res) => {
-    res.status(200).send('My site isn\'t even ready yet and I\'m already catching flak. :(');
+app.get('/userpage', (req,res) => {
+    res.status(200).res.sendFile('public/userpage.html', {root: path.join(__dirname, './')})
 });
 
 app.post('/movies/favorites/add/:title', (req,res) => {
