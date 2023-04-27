@@ -1,10 +1,19 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
+const Models = require('./models.js');
 const fs = require('fs');
 const path = require('path');
 const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
+const Movies = Models.Movie;
+const Users = Models.User;
 
+mongoose.connect('mongodb://localhost:27017/movie-db', {useNewUrlParser: true, useUnifiedTopology: true});
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.static('public'));
 
