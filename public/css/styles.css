@@ -7,6 +7,12 @@
     font-style: italic;
 }
 
+.centerer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
 .margin-bottom-small {
     margin-bottom: 1rem;
 }
@@ -90,12 +96,22 @@ h4 {
     flex-direction: column;
     margin-top: 5rem;
     justify-content: center; 
-    margin-left: 30%;
-    margin-right: 30%;
+    max-width: fit-content;
+    min-width: fit-content;
     border: 1px solid #000000;
     background-color: #b3b3b3;
     padding: 3rem;
     border-radius: 0.3rem;
+}
+
+#username {
+    max-width: 12rem;
+    min-width: 12rem;
+}
+
+#password {
+    max-width: 12rem;
+    min-width: 12rem;
 }
 
 .user-login-info {

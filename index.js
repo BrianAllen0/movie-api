@@ -10,7 +10,9 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/movie-db', {useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect('mongodb://localhost:27017/movie-db', {useNewUrlParser: true, useUnifiedTopology: true});
+
+console.log('line 15');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -48,8 +50,8 @@ app.get('/directors/:name', (req,res) => {
     res.status(200).send(director + '? Never heard of them.');
 });
 
-app.get('/userpage', (req,res) => {
-    res.status(200).res.sendFile('public/userpage.html', {root: path.join(__dirname, './')})
+app.get('/user', (req,res) => {
+    res.status(200).res.sendFile('public/user.html', {root: path.join(__dirname, './')})
 });
 
 app.post('/movies/favorites/add/:title', (req,res) => {
@@ -65,3 +67,33 @@ app.delete('/movies/favorites/remove/:title', (req,res) => {
 app.listen(8080, () => {
     console.log('Your app is listening on port 8080.');
 });
+
+
+
+(function(){
+    let usernameForm = document.querySelector('#username');
+    let passwordForm = document.querySelector('#password');
+    let emailForm = document.querySelector('#email');
+    let registerReferButton = document.querySelector('#user-register-refer');
+    let registerSubmitButton = document.querySelector('#user-register-submit');
+    ////////////////////// Userpage //////////////////////
+    function validateUsername() {
+        let input = usernameForm.value;
+    }
+
+    function validatePassword() {
+
+    }
+
+    function validateEmail() {
+
+    }
+    registerReferButton.addEventListener('click', function() {
+        console.log('cool dude');
+        location.href = ('/register.html');
+    });
+
+
+
+    
+})();
