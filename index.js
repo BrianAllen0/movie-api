@@ -17,6 +17,9 @@ mongoose.connect('mongodb://localhost:27017/movie-db', {useNewUrlParser: true, u
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.static('public'));
 
@@ -24,11 +27,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-app.get('/', (req,res) => {
-    res.status(200).send('Welcome to my app!');
-});
-
-app.get('/movies', (req,res) => {
+app.get('/movies', passport.authenticate('jwt', {session: false}), (req,res) => {
     Movies.find().then((movies)=> {
         res.status(200).json(movies);
     }).catch((error)=> {
@@ -37,7 +36,7 @@ app.get('/movies', (req,res) => {
     });
 });
 
-app.get('/movies/favorites', (req,res) => {
+app.get('/movies/favorites', passport.authenticate('jwt', {session: false}), (req,res) => {
     Users.findOne({Username: req.body.Username}).then((user)=>{
         if(!user) {
             return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
@@ -50,7 +49,7 @@ app.get('/movies/favorites', (req,res) => {
     });
 });
 
-app.get('/movies/:title', (req,res) => {
+app.get('/movies/:title', passport.authenticate('jwt', {session: false}), (req,res) => {
     Movies.findOne({Title: req.params.title}).then((movie)=> {
         if(!movie) {
             return res.status(400).send('Movie: ' + req.params.title + ' doesn\'t exist.');
@@ -63,7 +62,7 @@ app.get('/movies/:title', (req,res) => {
     });
 });
 
-app.get('/genres/:name', (req,res) => {
+app.get('/genres/:name', passport.authenticate('jwt', {session: false}), (req,res) => {
     Genres.findOne({Name: req.params.name}).then((genre)=> {
         if(!genre) {
             return res.status(400).send('Genre: ' + req.params.name + ' doesn\'t exist.');
@@ -76,7 +75,7 @@ app.get('/genres/:name', (req,res) => {
     });
 });
 
-app.get('/directors/:name', (req,res) => {
+app.get('/directors/:name', passport.authenticate('jwt', {session: false}), (req,res) => {
     Directors.findOne({Name: req.params.name}).then((director)=> {
         if(!director) {
             return res.status(400).send('Director: ' + req.params.name + ' doesn\'t exist.');
@@ -89,25 +88,7 @@ app.get('/directors/:name', (req,res) => {
     });
 });
 
-app.post('/user/login', (req,res) => {
-    Users.findOne({Username: req.body.Username}).then((user) => {
-        if(!user) {
-            return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
-        } else {
-            if(req.body.Password === user.Password) {
-                return res.status(200).send('Logged in successfully.');
-                // TODO: add login logic here
-            } else {
-                return res.status(400).send('Password is incorrect.');
-            }
-        }
-    }).catch((error) => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-    });
-});
-
-app.put('/user/update', (req,res) => {
+app.put('/user/update', passport.authenticate('jwt', {session: false}), (req,res) => {
     Users.findOne({Username: req.body.Username}).then((user) => {
         if(!user) {
             return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
@@ -145,7 +126,7 @@ app.post('/user/register', (req,res) => {
     });
 });
 
-app.post('/movies/favorites/add/:title', (req,res) => {
+app.post('/movies/favorites/add/:title', passport.authenticate('jwt', {session: false}), (req,res) => {
     let MovieID = undefined;
 
     Movies.findOne({Title: req.params.title}).then((movie)=> {
@@ -181,7 +162,7 @@ app.post('/movies/favorites/add/:title', (req,res) => {
     });
 });
 
-app.delete('/movies/favorites/remove', (req,res) => {
+app.delete('/movies/favorites/remove', passport.authenticate('jwt', {session: false}), (req,res) => {
     let MovieID = undefined;
 
     Movies.findOne({Title: req.body.Title}).then((movie)=> {
