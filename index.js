@@ -49,12 +49,40 @@ app.get('/user/login', (req,res) => {
     
 });
 
-app.patch('/user/update', (req,res) => {
-    
+app.put('/user/update', (req,res) => {
+    Users.findOneAndUpdate({Username: req.params.Username}, {$set: {
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+    }}, {new: true}, (err, updatedUser => {
+        if(err) {
+            console.log(err);
+            res.status(500).send('Error: ' + err);
+        } else {
+            res.json(updatedUser);
+        }
+    }));
 });
 
 app.post('/user/register', (req,res) => {
-    
+    Users.findOne({Username: req.body.Username}).then((user) => {
+        if(user) {
+            return res.status(400).send('User: ' + req.body.Username + ' already exists.');
+        } else {
+            Users.create({
+                Username: req.body.Username,
+                Password: req.body.Password,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday
+            }).then((user) => {res.status(201).json(user);}).catch((error) => {
+                console.error(error);
+                res.status(500).send('Error: ' + error);
+            })
+        }
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    })
 });
 
 app.post('/movies/favorites/add/:title', (req,res) => {
