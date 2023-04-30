@@ -89,12 +89,13 @@ app.get('/directors/:name', (req,res) => {
     });
 });
 
-app.get('/user/login', (req,res) => {
+app.post('/user/login', (req,res) => {
     Users.findOne({Username: req.body.Username}).then((user) => {
         if(!user) {
             return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
         } else {
             if(req.body.Password === user.Password) {
+                return res.status(200).send('Logged in successfully.');
                 // TODO: add login logic here
             } else {
                 return res.status(400).send('Password is incorrect.');
@@ -107,18 +108,20 @@ app.get('/user/login', (req,res) => {
 });
 
 app.put('/user/update', (req,res) => {
-    Users.findOneAndUpdate({Username: req.params.Username}, {$set: {
-        Username: req.body.Username,
-        Password: req.body.Password,
-        Email: req.body.Email,
-    }}, {new: true}, (err, updatedUser => {
-        if(err) {
-            console.log(err);
-            res.status(500).send('Error: ' + err);
+    Users.findOne({Username: req.body.Username}).then((user) => {
+        if(!user) {
+            return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
         } else {
-            res.status(201).json(updatedUser);
+            if(req.body.Password)
+                user.Password = req.body.Password;
+            if(req.body.Email)
+                user.Email = req.body.Email;
         }
-    }));
+        res.status(201).json(user);
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
 });
 
 app.post('/user/register', (req,res) => {
@@ -143,26 +146,75 @@ app.post('/user/register', (req,res) => {
 });
 
 app.post('/movies/favorites/add/:title', (req,res) => {
-    Users.findOneAndUpdate({Username: req.body.Username}, {$push: {
-        FavoriteMovies: req.params.title}}, {new: true}, (err, updatedUser) => {
-        if(err) {
-            console.error(err);
-            res.status(500).send('Error: ' + ererrror);
+    let MovieID = undefined;
+
+    Movies.findOne({Title: req.params.title}).then((movie)=> {
+        if(!movie) {
+            return res.status(400).send('Movie: ' + req.params.title + ' doesn\'t exist.');
         } else {
-            res.status(201).json(updatedUser.FavoriteMovies);
+            MovieID = movie._id;
         }
+    }).catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
+
+    Users.findOne({Username: req.body.Username}).then((updatedUser)=> {
+        if(!updatedUser) {
+            return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
+        } else {
+            if(updatedUser.FavoriteMovies.indexOf(MovieID) > -1) {
+                return res.status(400).send(`Movie "${req.params.title}" is already on favorites list of user "${req.body.Username}".`);
+            } else {
+                updatedUser.FavoriteMovies.push(MovieID);
+                updatedUser.save().then((updatedUser)=>{
+                    res.status(201).json(updatedUser.FavoriteMovies);
+                }).catch((error)=> {
+                    console.error(error);
+                    res.status(500).send('Error: ' + error);
+                });
+            }
+        }
+    }).catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
     });
 });
 
 app.delete('/movies/favorites/remove', (req,res) => {
-    Users.findOneAndUpdate({Username: req.body.Username}, {$pull: {
-        FavoriteMovies: req.body.Title}}, {new: true}, (err, updatedUser) => {
-        if(err) {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
+    let MovieID = undefined;
+
+    Movies.findOne({Title: req.body.Title}).then((movie)=> {
+        if(!movie) {
+            return res.status(400).send('Movie: ' + req.body.Title + ' doesn\'t exist.');
         } else {
-            res.json(updatedUser.FavoriteMovies);
+            MovieID = movie._id;
         }
+    }).catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
+
+    Users.findOne({Username: req.body.Username}).then((updatedUser)=> {
+        if(!updatedUser) {
+            return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
+        } else {
+            let movieIndex = updatedUser.FavoriteMovies.indexOf(MovieID);
+            if(!(movieIndex > -1)) {
+                return res.status(400).send(`Movie "${req.body.Title}" isn't on the favorites list of user "${req.body.Username}".`);
+            } else {
+                updatedUser.FavoriteMovies.splice(movieIndex, 1);
+                updatedUser.save().then((updatedUser)=>{
+                    res.status(201).json(updatedUser.FavoriteMovies);
+                }).catch((error)=> {
+                    console.error(error);
+                    res.status(500).send('Error: ' + error);
+                });
+            }
+        }
+    }).catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
     });
 });
 
