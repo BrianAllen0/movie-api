@@ -71,3 +71,4 @@
 ::ffff:127.0.0.1 - - [29/Apr/2023:23:43:56 +0000] "POST /user/register HTTP/1.1" 500 136 "-" "PostmanRuntime/7.32.2"
 ::ffff:127.0.0.1 - - [29/Apr/2023:23:44:28 +0000] "POST /user/register HTTP/1.1" 500 136 "-" "PostmanRuntime/7.32.2"
 ::ffff:127.0.0.1 - - [29/Apr/2023:23:44:54 +0000] "POST /user/register HTTP/1.1" 201 172 "-" "PostmanRuntime/7.32.2"
+::ffff:127.0.0.1 - - [30/Apr/2023:01:04:51 +0000] "GET /movies HTTP/1.1" 200 12376 "-" "PostmanRuntime/7.32.2"

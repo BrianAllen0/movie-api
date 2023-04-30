@@ -5,10 +5,13 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 const fs = require('fs');
 const path = require('path');
+const { update } = require('lodash');
 const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 const Movies = Models.Movie;
 const Users = Models.User;
+const Genres = Models.Genre;
+const Directors = Models.Director;
 
 mongoose.connect('mongodb://localhost:27017/movie-db', {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -26,27 +29,81 @@ app.get('/', (req,res) => {
 });
 
 app.get('/movies', (req,res) => {
-
+    Movies.find().then((movies)=> {
+        res.status(200).json(movies);
+    }).catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
 });
 
 app.get('/movies/favorites', (req,res) => {
-
+    Users.findOne({Username: req.body.Username}).then((user)=>{
+        if(!user) {
+            return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
+        } else {
+            res.status(201).json(user.FavoriteMovies);
+        }
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
 });
 
 app.get('/movies/:title', (req,res) => {
-
+    Movies.findOne({Title: req.params.title}).then((movie)=> {
+        if(!movie) {
+            return res.status(400).send('Movie: ' + req.params.title + ' doesn\'t exist.');
+        } else {
+            res.status(201).json(movie);
+        }
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
 });
 
 app.get('/genres/:name', (req,res) => {
-
+    Genres.findOne({Name: req.params.name}).then((genre)=> {
+        if(!genre) {
+            return res.status(400).send('Genre: ' + req.params.name + ' doesn\'t exist.');
+        } else {
+            res.status(201).json(genre);
+        }
+    }).catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
 });
 
 app.get('/directors/:name', (req,res) => {
-
+    Directors.findOne({Name: req.params.name}).then((director)=> {
+        if(!director) {
+            return res.status(400).send('Director: ' + req.params.name + ' doesn\'t exist.');
+        } else {
+            res.status(201).json(director);
+        }
+    }).catch((error)=> {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
 });
 
 app.get('/user/login', (req,res) => {
-    
+    Users.findOne({Username: req.body.Username}).then((user) => {
+        if(!user) {
+            return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
+        } else {
+            if(req.body.Password === user.Password) {
+                // TODO: add login logic here
+            } else {
+                return res.status(400).send('Password is incorrect.');
+            }
+        }
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
 });
 
 app.put('/user/update', (req,res) => {
@@ -82,15 +139,31 @@ app.post('/user/register', (req,res) => {
     }).catch((error) => {
         console.error(error);
         res.status(500).send('Error: ' + error);
-    })
+    });
 });
 
 app.post('/movies/favorites/add/:title', (req,res) => {
-
+    Users.findOneAndUpdate({Username: req.params.Username}, {$push: {
+        FavoriteMovies: req.params.title}}, {new: true}, (err, updatedUser) => {
+        if(err) {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+        } else {
+            res.json(updatedUser.FavoriteMovies);
+        }
+    });
 });
 
-app.delete('/movies/favorites/remove/:title', (req,res) => {
-
+app.delete('/movies/favorites/remove', (req,res) => {
+    Users.findOneAndUpdate({Username: req.params.Username}, {$pull: {
+        FavoriteMovies: req.body.Title}}, {new: true}, (err, updatedUser) => {
+        if(err) {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+        } else {
+            res.json(updatedUser.FavoriteMovies);
+        }
+    });
 });
 
 app.listen(8080, () => {
