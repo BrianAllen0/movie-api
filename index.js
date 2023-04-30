@@ -42,7 +42,7 @@ app.get('/movies/favorites', (req,res) => {
         if(!user) {
             return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
         } else {
-            res.status(201).json(user.FavoriteMovies);
+            res.status(200).json(user.FavoriteMovies);
         }
     }).catch((error) => {
         console.error(error);
@@ -55,7 +55,7 @@ app.get('/movies/:title', (req,res) => {
         if(!movie) {
             return res.status(400).send('Movie: ' + req.params.title + ' doesn\'t exist.');
         } else {
-            res.status(201).json(movie);
+            res.status(200).json(movie);
         }
     }).catch((error) => {
         console.error(error);
@@ -68,7 +68,7 @@ app.get('/genres/:name', (req,res) => {
         if(!genre) {
             return res.status(400).send('Genre: ' + req.params.name + ' doesn\'t exist.');
         } else {
-            res.status(201).json(genre);
+            res.status(200).json(genre);
         }
     }).catch((error)=> {
         console.error(error);
@@ -81,7 +81,7 @@ app.get('/directors/:name', (req,res) => {
         if(!director) {
             return res.status(400).send('Director: ' + req.params.name + ' doesn\'t exist.');
         } else {
-            res.status(201).json(director);
+            res.status(200).json(director);
         }
     }).catch((error)=> {
         console.error(error);
@@ -116,7 +116,7 @@ app.put('/user/update', (req,res) => {
             console.log(err);
             res.status(500).send('Error: ' + err);
         } else {
-            res.json(updatedUser);
+            res.status(201).json(updatedUser);
         }
     }));
 });
@@ -149,7 +149,7 @@ app.post('/movies/favorites/add/:title', (req,res) => {
             console.error(error);
             res.status(500).send('Error: ' + error);
         } else {
-            res.json(updatedUser.FavoriteMovies);
+            res.status(201).json(updatedUser.FavoriteMovies);
         }
     });
 });
