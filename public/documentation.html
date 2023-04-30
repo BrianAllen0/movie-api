@@ -38,7 +38,7 @@
         <div id="GetMovieData" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Get data about a specific movie</h2>
-                <h3 class="endpoint-url">/movies/title &emsp;Method: GET</h3>
+                <h3 class="endpoint-url">/movies/<span class="italic">title</span> &emsp;Method: GET</h3>
             </div>
             <div class="response">
                 <h4>JSON Response:</h4>
@@ -54,7 +54,7 @@
         <div id="GetGenreData" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Get data about a movie genre</h2>
-                <h3 class="endpoint-url">/genres/name &emsp;Method: GET</h3>
+                <h3 class="endpoint-url">/genres/<span class="italic">name</span> &emsp;Method: GET</h3>
             </div>
             <div class="response">
                 <h4>JSON Response:</h4>
@@ -68,7 +68,7 @@
         <div id="GetDirectorData" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Get data about a director</h2>
-                <h3 class="endpoint-url">/directors/name &emsp;Method: GET</h3>
+                <h3 class="endpoint-url">/directors/<span class="italic">name</span> &emsp;Method: GET</h3>
             </div>
             <div class="response">
                 <h4>JSON Response:</h4>
@@ -83,7 +83,7 @@
         <div id="AddMovieToFavorites" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Add a movie to your favorites list</h2>
-                <h3 class="endpoint-url">/movies/favorites/add/title &emsp;Method: POST</h3>
+                <h3 class="endpoint-url">/movies/favorites/add/<span class="italic">title</span> &emsp;Method: POST</h3>
             </div>
             <div class="response">
                 <h4>JSON Response:</h4>
@@ -96,16 +96,22 @@
                 }<br>
             </div>
         </div>
-        <div id="User" class="doc-container">
+        <div id="Login" class="doc-container">
             <div class="doc-header">
-                <h2 class="endpoint-description">Serve the interface to login to a user account.</h2>
-                <h3 class="endpoint-url">/public/user &emsp;Method: GET</h3>
+                <h2 class="endpoint-description">Login to a user account.</h2>
+                <h3 class="endpoint-url">/user/login &emsp;Method: POST</h3>
+            </div>
+        </div>
+        <div id="UpdateUser" class="doc-container">
+            <div class="doc-header">
+                <h2 class="endpoint-description">Update info in a user account.</h2>
+                <h3 class="endpoint-url">/user/update &emsp;Method: PATCH</h3>
             </div>
         </div>
         <div id="Register" class="doc-container">
             <div class="doc-header">
-                <h2 class="endpoint-description">Serve the interface to register a new user account.</h2>
-                <h3 class="endpoint-url">/public/register &emsp;Method: GET</h3>
+                <h2 class="endpoint-description">Register a new user account.</h2>
+                <h3 class="endpoint-url">/user/register &emsp;Method: POST</h3>
             </div>
         </div>
         <div id="RemoveFromFavorites" class="doc-container">

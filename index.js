@@ -10,9 +10,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 const Movies = Models.Movie;
 const Users = Models.User;
 
-//mongoose.connect('mongodb://localhost:27017/movie-db', {useNewUrlParser: true, useUnifiedTopology: true});
-
-console.log('line 15');
+mongoose.connect('mongodb://localhost:27017/movie-db', {useNewUrlParser: true, useUnifiedTopology: true});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -28,72 +26,45 @@ app.get('/', (req,res) => {
 });
 
 app.get('/movies', (req,res) => {
-    res.status(200).send('Movie catalogue coming soon!');
+
 });
 
 app.get('/movies/favorites', (req,res) => {
-    res.status(200).send('Favorites page coming soon!');
+
 });
 
 app.get('/movies/:title', (req,res) => {
-    let movie = req.params.title;
-    res.status(200).send(movie + '? Never heard of it, but I\'m sure it\'s a good one!');
+
 });
 
 app.get('/genres/:name', (req,res) => {
-    let genre = req.params.name;
-    res.status(200).send(genre + '? Never watched any of those.');
+
 });
 
 app.get('/directors/:name', (req,res) => {
-    let director = req.params.name;
-    res.status(200).send(director + '? Never heard of them.');
+
 });
 
-app.get('/user', (req,res) => {
-    res.status(200).res.sendFile('public/user.html', {root: path.join(__dirname, './')})
+app.get('/user/login', (req,res) => {
+    
+});
+
+app.patch('/user/update', (req,res) => {
+    
+});
+
+app.post('/user/register', (req,res) => {
+    
 });
 
 app.post('/movies/favorites/add/:title', (req,res) => {
-    let movie = req.params.title;
-    res.status(201).send(movie + '? I\'m sure it\'s great, but the favorites page isn\'t ready yet.');
+
 });
 
 app.delete('/movies/favorites/remove/:title', (req,res) => {
-    let movie = req.params.title;
-    res.status(201).send(movie + ' is no longer your favorite? Well I\'m sorry you feel that way, but the favorites page isn\'t ready yet.');
+
 });
 
 app.listen(8080, () => {
     console.log('Your app is listening on port 8080.');
 });
-
-
-
-(function(){
-    let usernameForm = document.querySelector('#username');
-    let passwordForm = document.querySelector('#password');
-    let emailForm = document.querySelector('#email');
-    let registerReferButton = document.querySelector('#user-register-refer');
-    let registerSubmitButton = document.querySelector('#user-register-submit');
-    ////////////////////// Userpage //////////////////////
-    function validateUsername() {
-        let input = usernameForm.value;
-    }
-
-    function validatePassword() {
-
-    }
-
-    function validateEmail() {
-
-    }
-    registerReferButton.addEventListener('click', function() {
-        console.log('cool dude');
-        location.href = ('/register.html');
-    });
-
-
-
-    
-})();
