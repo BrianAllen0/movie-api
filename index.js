@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 const fs = require('fs');
@@ -17,6 +18,18 @@ mongoose.connect('mongodb://localhost:27017/movie-db', {useNewUrlParser: true, u
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({origin: (origin, callback) => {
+    if(!origin)
+        return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1) {
+        let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+        return callback(new Error(), false);
+    }
+    return callback(null, true);
+}}));
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
@@ -106,13 +119,14 @@ app.put('/user/update', passport.authenticate('jwt', {session: false}), (req,res
 });
 
 app.post('/user/register', (req,res) => {
+    let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({Username: req.body.Username}).then((user) => {
         if(user) {
             return res.status(400).send('User: ' + req.body.Username + ' already exists.');
         } else {
             Users.create({
                 Username: req.body.Username,
-                Password: req.body.Password,
+                Password: hashedPassword,
                 Email: req.body.Email,
                 Birthday: req.body.Birthday
             }).then((user) => {res.status(201).json(user);}).catch((error) => {
