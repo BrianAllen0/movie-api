@@ -143,11 +143,11 @@ app.post('/user/register', (req,res) => {
 });
 
 app.post('/movies/favorites/add/:title', (req,res) => {
-    Users.findOneAndUpdate({Username: req.params.Username}, {$push: {
+    Users.findOneAndUpdate({Username: req.body.Username}, {$push: {
         FavoriteMovies: req.params.title}}, {new: true}, (err, updatedUser) => {
         if(err) {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
+            console.error(err);
+            res.status(500).send('Error: ' + ererrror);
         } else {
             res.status(201).json(updatedUser.FavoriteMovies);
         }
@@ -155,11 +155,11 @@ app.post('/movies/favorites/add/:title', (req,res) => {
 });
 
 app.delete('/movies/favorites/remove', (req,res) => {
-    Users.findOneAndUpdate({Username: req.params.Username}, {$pull: {
+    Users.findOneAndUpdate({Username: req.body.Username}, {$pull: {
         FavoriteMovies: req.body.Title}}, {new: true}, (err, updatedUser) => {
         if(err) {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
+            console.error(err);
+            res.status(500).send('Error: ' + err);
         } else {
             res.json(updatedUser.FavoriteMovies);
         }

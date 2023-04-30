@@ -12,11 +12,11 @@
                 <h2 class="endpoint-description">Get a list of all movies in the database</h2>
                 <h3 class="endpoint-url">/movies &emsp;Method: GET</h3>
             </div>
-            <div class="response">
+            <div class="panel">
                 <h4>JSON Response:</h4>
                 {<br>
-                &emsp;movie1: [],<br>
-                &emsp;movie2: [],<br>
+                &emsp;{movie1},<br>
+                &emsp;{movie2},<br>
                 &emsp;...<br>
                 }<br>
             </div>
@@ -26,11 +26,11 @@
                 <h2 class="endpoint-description">Get a list of all movies marked as favorites</h2>
                 <h3 class="endpoint-url">/movies/favorites &emsp;Method: GET</h3>
             </div>
-            <div class="response">
+            <div class="panel">
                 <h4>JSON Response:</h4>
                 {<br>
-                &emsp;movie1: [],<br>
-                &emsp;movie2: [],<br>
+                &emsp;{movie1},<br>
+                &emsp;{movie2},<br>
                 &emsp;...<br>
                 }<br>
             </div>
@@ -40,14 +40,14 @@
                 <h2 class="endpoint-description">Get data about a specific movie</h2>
                 <h3 class="endpoint-url">/movies/<span class="italic">title</span> &emsp;Method: GET</h3>
             </div>
-            <div class="response">
+            <div class="panel">
                 <h4>JSON Response:</h4>
                 {<br>
-                &emsp;title: "",<br>
-                &emsp;director: "",<br>
-                &emsp;rating: "",<br>
-                &emsp;genre: "",<br>
-                &emsp;...<br>
+                &emsp;Title: string,<br>
+                &emsp;Description: string,<br>
+                &emsp;Director: string,<br>
+                &emsp;Genre: string,<br>
+                &emsp;Featured: boolean<br>
                 }<br>
             </div>
         </div>
@@ -56,12 +56,11 @@
                 <h2 class="endpoint-description">Get data about a movie genre</h2>
                 <h3 class="endpoint-url">/genres/<span class="italic">name</span> &emsp;Method: GET</h3>
             </div>
-            <div class="response">
+            <div class="panel">
                 <h4>JSON Response:</h4>
                 {<br>
-                &emsp;title: "",<br>
-                &emsp;description: "",<br>
-                &emsp;...<br>
+                &emsp;Name: string,<br>
+                &emsp;Description: string<br>
                 }<br>
             </div>
         </div>
@@ -70,12 +69,13 @@
                 <h2 class="endpoint-description">Get data about a director</h2>
                 <h3 class="endpoint-url">/directors/<span class="italic">name</span> &emsp;Method: GET</h3>
             </div>
-            <div class="response">
+            <div class="panel">
                 <h4>JSON Response:</h4>
                 {<br>
-                &emsp;name: "",<br>
-                &emsp;bio: "",<br>
-                &emsp;birthdate: "",<br>
+                &emsp;Name: string,<br>
+                &emsp;Bio: string,<br>
+                &emsp;Birth: date,<br>
+                &emsp;Death: date<br>
                 &emsp;...<br>
                 }<br>
             </div>
@@ -85,14 +85,11 @@
                 <h2 class="endpoint-description">Add a movie to your favorites list</h2>
                 <h3 class="endpoint-url">/movies/favorites/add/<span class="italic">title</span> &emsp;Method: POST</h3>
             </div>
-            <div class="response">
-                <h4>JSON Response:</h4>
+            <div class="panel">
+                <h4>Request Body:</h4>
                 {<br>
-                &emsp;title: "",<br>
-                &emsp;director: "",<br>
-                &emsp;rating: "",<br>
-                &emsp;genre: "",<br>
-                &emsp;...<br>
+                &emsp;Username: string,<br>
+                &emsp;Title: string<br>
                 }<br>
             </div>
         </div>
@@ -101,11 +98,26 @@
                 <h2 class="endpoint-description">Login to a user account.</h2>
                 <h3 class="endpoint-url">/user/login &emsp;Method: POST</h3>
             </div>
+            <div class="panel">
+                <h4>Request Body:</h4>
+                {<br>
+                &emsp;Username: string,<br>
+                &emsp;Password: string<br>
+                }<br>
+            </div>
         </div>
         <div id="UpdateUser" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Update info in a user account.</h2>
                 <h3 class="endpoint-url">/user/update &emsp;Method: PUT</h3>
+            </div>
+            <div class="panel">
+                <h4>Request Body:</h4>
+                {<br>
+                &emsp;Username: string,<br>
+                &emsp;Password: string,<br>
+                &emsp;Email: string<br>
+                }<br>
             </div>
         </div>
         <div id="Register" class="doc-container">
@@ -113,11 +125,27 @@
                 <h2 class="endpoint-description">Register a new user account.</h2>
                 <h3 class="endpoint-url">/user/register &emsp;Method: POST</h3>
             </div>
+            <div class="panel">
+                <h4>Request Body:</h4>
+                {<br>
+                &emsp;Username: string,<br>
+                &emsp;Password: string,<br>
+                &emsp;Email: string,<br>
+                &emsp;Birthday: string<br>
+                }<br>
+            </div>
         </div>
         <div id="RemoveFromFavorites" class="doc-container">
             <div class="doc-header">
                 <h2 class="endpoint-description">Remove a movie from your favorites list</h2>
-                <h3 class="endpoint-url">/movies/favorites/remove/title &emsp;Method: DELETE</h3>
+                <h3 class="endpoint-url">/movies/favorites/remove &emsp;Method: DELETE</h3>
+                <div class="panel">
+                    <h4>Request Body:</h4>
+                    {<br>
+                    &emsp;Username: string,<br>
+                    &emsp;Title: string<br>
+                    }<br>
+                </div>
             </div>
         </div>
     </body>
