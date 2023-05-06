@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const { check, validationResult } = require('express-validator');
 const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -118,7 +119,16 @@ app.put('/user/update', passport.authenticate('jwt', {session: false}), (req,res
     });
 });
 
-app.post('/user/register', (req,res) => {
+app.post('/user/register', [
+check('Username', 'Username is required').notEmpty(),
+check('Username', 'Username must contain only alphanumeric characters.').isAlphanumeric(),
+check('Password', 'Password is required').notEmpty(),
+check('Email', 'A valid email is required').isEmail()
+], (req,res) => {
+    let errors = validationResult(req);
+    if(!(errors.isEmpty())) {
+        return res.status(422).json({errors: errors.array()});
+    }
     let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({Username: req.body.Username}).then((user) => {
         if(user) {
@@ -213,6 +223,7 @@ app.delete('/movies/favorites/remove', passport.authenticate('jwt', {session: fa
     });
 });
 
-app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+    console.log('Listening on Port ' + port);
 });
