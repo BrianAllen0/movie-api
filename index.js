@@ -139,7 +139,7 @@ check('Email', 'A valid email is required').isEmail()
                 Password: hashedPassword,
                 Email: req.body.Email,
                 Birthday: req.body.Birthday
-            }).then((user) => {res.status(201).json({user, token});}).catch((error) => {
+            }).then((user) => {res.status(201).json(user);}).catch((error) => {
                 console.error(error);
                 res.status(500).send('Error: ' + error);
             })
