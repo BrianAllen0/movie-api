@@ -108,7 +108,7 @@ app.put('/user/update', passport.authenticate('jwt', {session: false}), (req,res
             return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
         } else {
             if(req.body.Password)
-                user.Password = req.body.Password;
+                user.Password = Users.hashPassword(req.body.Password);
             if(req.body.Email)
                 user.Email = req.body.Email;
         }
