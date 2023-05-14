@@ -39,6 +39,7 @@ app.use(express.static('public'));
 
 app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
+    console.log(err.stack);
 });
 
 app.get('/movies', passport.authenticate('jwt', {session: false}), (req,res) => {
