@@ -1,6 +1,7 @@
 const jwtSecret = 'MakingApps';
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const { User } = require('./models');
 
 require('./passport');
 
@@ -17,7 +18,7 @@ module.exports = (router) => {
         passport.authenticate('local', {session: false}, (error, user, info)=> {
             if(error || !user) {
                 return res.status(400).json({
-                    message: req,
+                    message: user,
                     user: user
                 });
             }
