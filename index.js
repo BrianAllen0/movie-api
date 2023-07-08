@@ -103,7 +103,7 @@ app.get('/directors/:name',  (req,res) => {
     });
 });
 
-app.put('/user/update',  (req,res) => {
+app.patch('/user/update',  (req,res) => {
     Users.findOne({Username: req.body.Username}).then((user) => {
         if(!user) {
             return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
