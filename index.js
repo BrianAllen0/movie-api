@@ -42,7 +42,7 @@ app.use((err, req, res, next) => {
     console.log(err.stack);
 });
 
-app.get('/movies', passport.authenticate('jwt', {session: false}), (req,res) => {
+app.get('/movies',  (req,res) => {
     Movies.find().then((movies)=> {
         res.status(200).json(movies);
     }).catch((error)=> {
@@ -51,7 +51,7 @@ app.get('/movies', passport.authenticate('jwt', {session: false}), (req,res) => 
     });
 });
 
-app.get('/movies/favorites', passport.authenticate('jwt', {session: false}), (req,res) => {
+app.get('/movies/favorites',  (req,res) => {
     Users.findOne({Username: req.body.Username}).then((user)=>{
         if(!user) {
             return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
@@ -64,7 +64,7 @@ app.get('/movies/favorites', passport.authenticate('jwt', {session: false}), (re
     });
 });
 
-app.get('/movies/:title', passport.authenticate('jwt', {session: false}), (req,res) => {
+app.get('/movies/:title',  (req,res) => {
     Movies.findOne({Title: req.params.title}).then((movie)=> {
         if(!movie) {
             return res.status(400).send('Movie: ' + req.params.title + ' doesn\'t exist.');
@@ -77,7 +77,7 @@ app.get('/movies/:title', passport.authenticate('jwt', {session: false}), (req,r
     });
 });
 
-app.get('/genres/:name', passport.authenticate('jwt', {session: false}), (req,res) => {
+app.get('/genres/:name',  (req,res) => {
     Genres.findOne({Name: req.params.name}).then((genre)=> {
         if(!genre) {
             return res.status(400).send('Genre: ' + req.params.name + ' doesn\'t exist.');
@@ -90,7 +90,7 @@ app.get('/genres/:name', passport.authenticate('jwt', {session: false}), (req,re
     });
 });
 
-app.get('/directors/:name', passport.authenticate('jwt', {session: false}), (req,res) => {
+app.get('/directors/:name',  (req,res) => {
     Directors.findOne({Name: req.params.name}).then((director)=> {
         if(!director) {
             return res.status(400).send('Director: ' + req.params.name + ' doesn\'t exist.');
@@ -103,7 +103,7 @@ app.get('/directors/:name', passport.authenticate('jwt', {session: false}), (req
     });
 });
 
-app.put('/user/update', passport.authenticate('jwt', {session: false}), (req,res) => {
+app.put('/user/update',  (req,res) => {
     Users.findOne({Username: req.body.Username}).then((user) => {
         if(!user) {
             return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
