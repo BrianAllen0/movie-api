@@ -120,6 +120,19 @@ app.put('/user/update',  (req,res) => {
     });
 });
 
+app.get('/user', (req,res) => {
+    Users.findOne({Username: req.body.Username}).then((user)=> {
+        if(!user) {
+            return res.status(400).send('User: ' + req.body.Username + ' doesn\'t exist.');
+        } else {
+            res.status(200).json(user);
+        }
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
+})
+
 app.post('/user/register', [
 check('Username', 'Username is required').notEmpty(),
 check('Username', 'Username must contain only alphanumeric characters.').isAlphanumeric(),
