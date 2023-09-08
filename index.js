@@ -186,6 +186,21 @@ app.post(
     }
 );
 
+app.delete("/user/unregister", (req, res) => {
+    Users.findOne({ Username: req.body.Username })
+        .then((user) => {
+            if (!user) {
+                return res.status(400).send("User: " + req.body.Username + " doesn't exist.");
+            } else {
+                Users.deleteOne({ Username: req.body.Username });
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+        });
+});
+
 app.post("/movies/favorites/add/:title", (req, res) => {
     let MovieID = undefined;
 
