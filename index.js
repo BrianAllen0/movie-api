@@ -20,9 +20,9 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
+let allowedOrigins = ["http://localhost:8080", "http://testsite.com"];
 
-//app.use(cors()); //{origin: (origin, callback) => {
+app.use(cors()); //{origin: (origin, callback) => {
 //     if(!origin)
 //         return callback(null, true);
 //     if(allowedOrigins.indexOf(origin) === -1) {
