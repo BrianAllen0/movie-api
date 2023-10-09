@@ -42,6 +42,10 @@ app.use((err, req, res, next) => {
     console.log(err.stack);
 });
 
+/**
+ * Returns a list of all movies in the database
+ * @returns {object}
+ */
 app.get("/movies", (req, res) => {
     Movies.find()
         .then((movies) => {
@@ -53,6 +57,11 @@ app.get("/movies", (req, res) => {
         });
 });
 
+/**
+ * Returns a list of a user's favorite movies
+ * @param {string} user.Username
+ * @returns {object}
+ */
 app.get("/movies/favorites", (req, res) => {
     Users.findOne({ Username: req.body.Username })
         .then((user) => {
@@ -68,6 +77,10 @@ app.get("/movies/favorites", (req, res) => {
         });
 });
 
+/**
+ * Returns a specific movie
+ * @returns {object}
+ */
 app.get("/movies/:title", (req, res) => {
     Movies.findOne({ Title: req.params.title })
         .then((movie) => {
@@ -83,6 +96,10 @@ app.get("/movies/:title", (req, res) => {
         });
 });
 
+/**
+ * Returns a specific genre
+ * @returns {object}
+ */
 app.get("/genres/:name", (req, res) => {
     Genres.findOne({ Name: req.params.name })
         .then((genre) => {
@@ -98,6 +115,10 @@ app.get("/genres/:name", (req, res) => {
         });
 });
 
+/**
+ * Returns a specific director
+ * @returns {object}
+ */
 app.get("/directors/:name", (req, res) => {
     Directors.findOne({ Name: req.params.name })
         .then((director) => {
@@ -113,6 +134,12 @@ app.get("/directors/:name", (req, res) => {
         });
 });
 
+/**
+ * Updates a user's information and returns the new user object
+ * @param {string} [email]
+ * @param {string} [password]
+ * @returns {object}
+ */
 app.patch("/user/update", (req, res) => {
     Users.findOne({ Username: req.body.Username })
         .then((user) => {
@@ -130,6 +157,10 @@ app.patch("/user/update", (req, res) => {
         });
 });
 
+/**
+ * Returns a specific user
+ * @returns {object}
+ */
 app.get("/user/:username", (req, res) => {
     Users.findOne({ Username: req.params.username })
         .then((user) => {
@@ -145,6 +176,14 @@ app.get("/user/:username", (req, res) => {
         });
 });
 
+/**
+ * Registers a new user
+ * @param {string} username
+ * @param {string} password
+ * @param {string} email
+ * @param {string} birthday
+ * @returns {object}
+ */
 app.post(
     "/user/register",
     [
@@ -186,6 +225,10 @@ app.post(
     }
 );
 
+/**
+ * Deletes an existing user
+ * @param {string} username
+ */
 app.delete("/user/unregister", (req, res) => {
     Users.findOne({ Username: req.body.Username })
         .then((user) => {
@@ -201,6 +244,12 @@ app.delete("/user/unregister", (req, res) => {
         });
 });
 
+/**
+ * Adds a movie to a user's favorites
+ * @param {string} username
+ * @param {string} title
+ * @returns {object}
+ */
 app.post("/movies/favorites/add/:title", (req, res) => {
     let MovieID = undefined;
 
@@ -244,6 +293,12 @@ app.post("/movies/favorites/add/:title", (req, res) => {
         });
 });
 
+/**
+ * Removes a movie from a user's favorites
+ * @param {string} username
+ * @param {string} title
+ * @returns {object}
+ */
 app.delete("/movies/favorites/remove", (req, res) => {
     let MovieID = undefined;
 
