@@ -46,8 +46,6 @@ app.use((err, req, res, next) => {
  * Returns a list of all movies
  * @name GetMovies
  * @function
- * @param {string} title - Movie title in request body
- * @param {string} username - Username in request body
  * @return {Object}
  */
 app.get("/movies", (req, res) => {
@@ -65,15 +63,14 @@ app.get("/movies", (req, res) => {
  * Returns a list of a user's favorite movies
  * @name GetUserFavoriteMovies
  * @function
- * @param {string} title - Movie title in request body
- * @param {string} username - Username in request body
+ * @param {string} userId - Username in request body
  * @return {Object}
  */
 app.get("/movies/favorites", (req, res) => {
-    Users.findOne({ Username: req.body.Username })
+    Users.findOne({ _id: req.body.userId })
         .then((user) => {
             if (!user) {
-                return res.status(400).send("User: " + req.body.Username + " doesn't exist.");
+                return res.status(400).send("User doesn't exist.");
             } else {
                 res.status(200).json(user.FavoriteMovies);
             }
@@ -88,14 +85,14 @@ app.get("/movies/favorites", (req, res) => {
  * Returns a specific movie
  * @name GetMovie
  * @function
- * @param {string} title - Movie title in request body
+ * @param {string} movieId - Movie id in url
  * @returns {object}
  */
-app.get("/movies/:title", (req, res) => {
-    Movies.findOne({ Title: req.params.title })
+app.get("/movies/:movieId", (req, res) => {
+    Movies.findOne({ _id: req.params.movieId })
         .then((movie) => {
             if (!movie) {
-                return res.status(400).send("Movie: " + req.params.title + " doesn't exist.");
+                return res.status(400).send("Movie doesn't exist.");
             } else {
                 res.status(200).json(movie);
             }
@@ -110,14 +107,14 @@ app.get("/movies/:title", (req, res) => {
  * Returns a specific genre
  * @name GetGenre
  * @function
- * @param {string} title - Genre title
+ * @param {string} genreId - Genre title
  * @returns {object}
  */
-app.get("/genres/:name", (req, res) => {
-    Genres.findOne({ Name: req.params.name })
+app.get("/genres/:genreId", (req, res) => {
+    Genres.findOne({ _id: req.params.genreId })
         .then((genre) => {
             if (!genre) {
-                return res.status(400).send("Genre: " + req.params.name + " doesn't exist.");
+                return res.status(400).send("Genre: " + req.params.genreId + " doesn't exist.");
             } else {
                 res.status(200).json(genre);
             }
@@ -132,14 +129,14 @@ app.get("/genres/:name", (req, res) => {
  * Returns a specific director
  * @name GetDirector
  * @function
- * @param {string} Name - Director's name
+ * @param {string} directorId - Director's ID
  * @returns {object}
  */
-app.get("/directors/:name", (req, res) => {
-    Directors.findOne({ Name: req.params.name })
+app.get("/directors/:directorId", (req, res) => {
+    Directors.findOne({ _id: req.params.directorId })
         .then((director) => {
             if (!director) {
-                return res.status(400).send("Director: " + req.params.name + " doesn't exist.");
+                return res.status(400).send("Director doesn't exist.");
             } else {
                 res.status(200).json(director);
             }
@@ -152,24 +149,18 @@ app.get("/directors/:name", (req, res) => {
 
 /**
  * Updates a user's information and returns the new user object
- * @param {string} [email]
- * @param {string} [password]
- * @returns {object}
- */
-
-/**
- * Updates a user's information and returns the new user object
  * @name UpdateUser
  * @function
+ * @param {string} userId - ID of user to update
  * @param {string} [email]
  * @param {string} [password]
  * @returns {object}
  */
 app.patch("/user/update", (req, res) => {
-    Users.findOne({ Username: req.body.Username })
+    Users.findOne({ _id: req.body.userId })
         .then((user) => {
             if (!user) {
-                return res.status(400).send("User: " + req.body.Username + " doesn't exist.");
+                return res.status(400).send("User doesn't exist.");
             } else {
                 if (req.body.Password) user.Password = Users.hashPassword(req.body.Password);
                 if (req.body.Email) user.Email = req.body.Email;
@@ -186,14 +177,14 @@ app.patch("/user/update", (req, res) => {
  * Returns a specific user
  * @name GetUser
  * @function
- * @param {string} username
+ * @param {string} userId
  * @returns {object}
  */
 app.get("/user/:username", (req, res) => {
-    Users.findOne({ Username: req.params.username })
+    Users.findOne({ _id: req.params.userId })
         .then((user) => {
             if (!user) {
-                return res.status(400).send("User: " + req.params.username + " doesn't exist.");
+                return res.status(400).send("User doesn't exist.");
             } else {
                 res.status(200).json(user);
             }
@@ -259,16 +250,16 @@ app.post(
  * Deletes an existing user
  * @name DeleteUser
  * @function
- * @param {string} username
+ * @param {string} userId
  * @returns {object}
  */
 app.delete("/user/unregister", (req, res) => {
-    Users.findOne({ Username: req.body.Username })
+    Users.findOne({ _id: req.body.userId })
         .then((user) => {
             if (!user) {
-                return res.status(400).send("User: " + req.body.Username + " doesn't exist.");
+                return res.status(400).send("User doesn't exist.");
             } else {
-                Users.deleteOne({ Username: req.body.Username });
+                Users.deleteOne({ _id: req.body.userId });
             }
         })
         .catch((error) => {
@@ -281,46 +272,14 @@ app.delete("/user/unregister", (req, res) => {
  * Adds a movie to a user's favorites
  * @name AddFavoriteMovie
  * @function
- * @param {string} username
- * @param {string} title
+ * @param {string} userId
+ * @param {string} movieId
  * @returns {object}
  */
-app.post("/movies/favorites/add/:title", (req, res) => {
-    let MovieID = undefined;
-
-    Movies.findOne({ Title: req.params.title })
-        .then((movie) => {
-            if (!movie) {
-                return res.status(400).send("Movie: " + req.params.title + " doesn't exist.");
-            } else {
-                MovieID = movie._id;
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).send("Error: " + error);
-        });
-
-    Users.findOne({ Username: req.body.Username })
+app.post("/movies/favorites/add/:movieId", (req, res) => {
+    Users.findOneAndUpdate({ _id: req.user.userId }, { $addToSet: { FavoriteMovies: req.params.movieId } })
         .then((updatedUser) => {
-            if (!updatedUser) {
-                return res.status(400).send("User: " + req.body.Username + " doesn't exist.");
-            } else {
-                if (updatedUser.FavoriteMovies.indexOf(MovieID) > -1) {
-                    return res.status(400).send(`Movie "${req.params.title}" is already on favorites list of user "${req.body.Username}".`);
-                } else {
-                    updatedUser.FavoriteMovies.push(MovieID);
-                    updatedUser
-                        .save()
-                        .then((updatedUser) => {
-                            res.status(201).json(updatedUser.FavoriteMovies);
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                            res.status(500).send("Error: " + error);
-                        });
-                }
-            }
+            res.status(201).json(updatedUser.FavoriteMovies);
         })
         .catch((error) => {
             console.error(error);
@@ -332,47 +291,14 @@ app.post("/movies/favorites/add/:title", (req, res) => {
  * Removes a movie from a user's favorites
  * @name RemoveFavoriteMovie
  * @function
- * @param {string} username
- * @param {string} title
+ * @param {string} userId
+ * @param {string} movieId
  * @returns {object}
  */
 app.delete("/movies/favorites/remove", (req, res) => {
-    let MovieID = undefined;
-
-    Movies.findOne({ Title: req.body.Title })
-        .then((movie) => {
-            if (!movie) {
-                return res.status(400).send("Movie: " + req.body.Title + " doesn't exist.");
-            } else {
-                MovieID = movie._id;
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).send("Error: " + error);
-        });
-
-    Users.findOne({ Username: req.body.Username })
+    Users.findOneAndDelete({ _id: req.user.userId }, { $addToSet: { FavoriteMovies: req.params.movieId } })
         .then((updatedUser) => {
-            if (!updatedUser) {
-                return res.status(400).send("User: " + req.body.Username + " doesn't exist.");
-            } else {
-                let movieIndex = updatedUser.FavoriteMovies.indexOf(MovieID);
-                if (!(movieIndex > -1)) {
-                    return res.status(400).send(`Movie "${req.body.Title}" isn't on the favorites list of user "${req.body.Username}".`);
-                } else {
-                    updatedUser.FavoriteMovies.splice(movieIndex, 1);
-                    updatedUser
-                        .save()
-                        .then((updatedUser) => {
-                            res.status(201).json(updatedUser.FavoriteMovies);
-                        })
-                        .catch((error) => {
-                            console.error(error);
-                            res.status(500).send("Error: " + error);
-                        });
-                }
-            }
+            res.status(201).json(updatedUser.FavoriteMovies);
         })
         .catch((error) => {
             console.error(error);
