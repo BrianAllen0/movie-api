@@ -276,7 +276,7 @@ app.delete("/user/unregister", (req, res) => {
  * @param {string} movieId
  * @returns {object}
  */
-app.post("/movies/favorites/add/:movieId", (req, res) => {
+app.post("/movies/favorites/add/:movieId", passport.authenticate("jwt", { session: false }), (req, res) => {
     Users.findOneAndUpdate({ _id: req.user._id }, { $addToSet: { FavoriteMovies: req.params.movieId } })
         .then((updatedUser) => {
             res.status(201).json(updatedUser.FavoriteMovies);
