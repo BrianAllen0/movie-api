@@ -277,7 +277,7 @@ app.delete("/user/unregister", (req, res) => {
  * @returns {object}
  */
 app.post("/movies/favorites/add/:movieId", (req, res) => {
-    Users.findOneAndUpdate({ _id: req.user.userId }, { $addToSet: { FavoriteMovies: req.params.movieId } })
+    Users.findOneAndUpdate({ _id: req.user._id }, { $addToSet: { FavoriteMovies: req.params.movieId } })
         .then((updatedUser) => {
             res.status(201).json(updatedUser.FavoriteMovies);
         })
@@ -296,7 +296,7 @@ app.post("/movies/favorites/add/:movieId", (req, res) => {
  * @returns {object}
  */
 app.delete("/movies/favorites/remove", (req, res) => {
-    Users.findOneAndDelete({ _id: req.user.userId }, { $addToSet: { FavoriteMovies: req.params.movieId } })
+    Users.findOneAndDelete({ _id: req.user._id }, { $addToSet: { FavoriteMovies: req.params.movieId } })
         .then((updatedUser) => {
             res.status(201).json(updatedUser.FavoriteMovies);
         })
