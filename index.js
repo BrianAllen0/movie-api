@@ -73,7 +73,7 @@ app.get("/movies/favorites", (req, res) => {
     Users.findOne({ _id: req.user._id })
         .then((user) => {
             if (!user) {
-                return res.status(400).send("User doesn't exist.");
+                return res.status(400).json({error: "User doesn't exist."});
             } else {
                 res.status(200).json(user.FavoriteMovies);
             }
@@ -95,10 +95,9 @@ app.get("/movies/:movieId", (req, res) => {
     Movies.findOne({ _id: req.params.movieId })
         .then((movie) => {
             if (!movie) {
-                return res.status(400).send("Movie doesn't exist.");
-            } else {
-                res.status(200).json(movie);
+                return res.status(400).json({error: "Movie doesn't exist."});
             }
+            return res.status(200).json(movie);
         })
         .catch((error) => {
             console.error(error);
@@ -117,10 +116,10 @@ app.get("/genres/:genreId", (req, res) => {
     Genres.findOne({ _id: req.params.genreId })
         .then((genre) => {
             if (!genre) {
-                return res.status(400).send("Genre: " + req.params.genreId + " doesn't exist.");
-            } else {
-                res.status(200).json(genre);
+                return res.status(400).json({error: "Genre: " + req.params.genreId + " doesn't exist."});
             }
+            return res.status(200).json(genre);
+
         })
         .catch((error) => {
             console.error(error);
@@ -139,10 +138,10 @@ app.get("/directors/:directorId", (req, res) => {
     Directors.findOne({ _id: req.params.directorId })
         .then((director) => {
             if (!director) {
-                return res.status(400).send("Director doesn't exist.");
-            } else {
-                res.status(200).json(director);
+                return res.status(400).json({error: "Director doesn't exist."});
             }
+            return res.status(200).json(director);
+
         })
         .catch((error) => {
             console.error(error);
@@ -272,13 +271,9 @@ app.post(
  * @returns {object}
  */
 app.delete("/user/unregister", passport.authenticate("jwt", { session: false }), (req, res) => {
-    Users.findOne({ _id: req.body.userId })
-        .then((user) => {
-            if (!user) {
-                return res.status(400).send("User doesn't exist.");
-            } else {
-                Users.deleteOne({ _id: req.body.userId });
-            }
+    Users.findByIdAndDelete({ _id: req.user._id })
+        .then(() => {
+            return res.status(200).json({error: `${req.user.Username} deleted.`});
         })
         .catch((error) => {
             console.error(error);
