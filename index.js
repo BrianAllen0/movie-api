@@ -178,7 +178,7 @@ app.patch("/user/update", passport.authenticate("jwt", { session: false }), (req
             $set: userEditInfo,
         },
         { new: true }
-    )
+    ).populate("FavoriteMovies")//https://mongoosejs.com/docs/populate.html
         .then((updatedUser) => {
             res.status(200).json(updatedUser);
         })
@@ -198,7 +198,7 @@ app.patch("/user/update", passport.authenticate("jwt", { session: false }), (req
 app.get("/user/:username", passport.authenticate("jwt", { session: false }), (req, res) => {
     Users.findById(req.user._id)
         .select("-Password")
-        .populate("FavoriteMovies")
+        .populate("FavoriteMovies") //https://mongoosejs.com/docs/populate.html
         .then((user) => {
             if (!user) {
                 return res.status(400).json({error: "User doesn't exist."});
@@ -290,8 +290,9 @@ app.delete("/user/unregister", passport.authenticate("jwt", { session: false }),
  * @returns {object}
  */
 app.post("/movies/favorites/add/:movieId", passport.authenticate("jwt", { session: false }), (req, res) => {
+    //https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/
     Users.findByIdAndUpdate(req.user._id, { $addToSet: { FavoriteMovies: req.params.movieId } })
-        .populate("FavoriteMovies")
+        .populate("FavoriteMovies")//https://mongoosejs.com/docs/populate.html
         .then((updatedUser) => {
             res.status(200).json(updatedUser.FavoriteMovies);
         })
@@ -310,8 +311,9 @@ app.post("/movies/favorites/add/:movieId", passport.authenticate("jwt", { sessio
  * @returns {object}
  */
 app.delete("/movies/favorites/remove", passport.authenticate("jwt", { session: false }), (req, res) => {
+   //https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/
     Users.findByIdAndDelete(req.user._id, { $addToSet: { FavoriteMovies: req.params.movieId } })
-        .populate("FavoriteMovies")
+        .populate("FavoriteMovies")//https://mongoosejs.com/docs/populate.html
         .then((updatedUser) => {
             res.status(200).json(updatedUser.FavoriteMovies);
         })
