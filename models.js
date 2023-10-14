@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema =  mongoose.Schema;
 const bcrypt = require('bcrypt');
-
+// reference https://mongoosejs.com/docs/guide.html
 const movieSchema = new Schema({
     Title: {type: String, required: true},
     Description: {type: String, required: true},
