@@ -195,7 +195,7 @@ app.patch("/user", passport.authenticate("jwt", { session: false }), (req, res) 
  * @function
  * @returns {object}
  */
-app.get("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
+app.get("/user", passport.authenticate("jwt", { session: false }), async (req, res) => {
     Users.findById(req.user._id)
         .select("-Password")
         .populate("FavoriteMovies")
