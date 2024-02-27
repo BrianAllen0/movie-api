@@ -287,7 +287,7 @@ app.delete("/user", passport.authenticate("jwt", { session: false }), (req, res)
  * @param {string} movieId
  * @returns {object}
  */
-app.post("/movies/favorites", passport.authenticate("jwt", { session: false }), (req, res) => {
+app.post("/movies/favorites", passport.authenticate("jwt", { session: false }), async (req, res) => {
     Users.findByIdAndUpdate(req.user._id, {
         $addToSet: { FavoriteMovies: req.body.movieId },
     })
