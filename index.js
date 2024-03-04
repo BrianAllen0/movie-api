@@ -307,7 +307,7 @@ app.post("/movies/favorites", passport.authenticate("jwt", { session: false }), 
  * @param {string} movieId
  * @returns {object}
  */
-app.put("/movies/favorites", passport.authenticate("jwt", { session: false }), (req, res) => {
+app.delete("/movies/favorites", passport.authenticate("jwt", { session: false }), (req, res) => {
     Users.findByIdAndUpdate(req.user._id, {
         $pull: { FavoriteMovies: req.body.movieId },
     })
