@@ -163,23 +163,16 @@ app.get("/directors/:directorId", (req, res) => {
  * @param {string} [password]
  * @returns {object}
  */
-app.patch("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
-    const userEditInfo = {
-        Email: req.body.Email,
-        Birthday: req.body.Birthday,
-    };
-
-    if (typeof req.body.Password == "string" && req.body.Password.trim().length > 0) {
-        userEditInfo.Password = User.hashPassword(req.body.Password);
+app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), (req, res) => {
+    if (req.body.Email) {
+        Users.findOneAndUpdate({ _id: req.user._id }, { $set: { Email: req.body.Email } }, { new: true });
     }
-    Users.findOneAndUpdate(
-        { _id: req.user._id },
-        {
-            $set: userEditInfo,
-        },
-        { new: true }
-    )
-        .populate("FavoriteMovies")
+    if (typeof req.body.Password == "string" && req.body.Password.trim().length > 0) {
+        let newPassword = Users.hashPassword(req.body.Password);
+        Users.findOneAndUpdate({ _id: req.user._id }, { $set: { Password: newPassword } }, { new: true });
+    }
+
+    Users.findOneAndUpdate({ _id: req.user._id }, { $set: {} }, { new: true })
         .then((updatedUser) => {
             res.status(200).json(updatedUser);
         })
