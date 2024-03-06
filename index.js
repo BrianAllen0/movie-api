@@ -164,6 +164,8 @@ app.get("/directors/:directorId", (req, res) => {
  * @returns {object}
  */
 app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), (req, res) => {
+    console.log(req.body);
+
     if (req.body.Email) {
         Users.findOneAndUpdate({ _id: req.user._id }, { $set: { Email: req.body.Email } }, { new: true });
     }
