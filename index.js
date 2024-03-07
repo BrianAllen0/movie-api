@@ -164,30 +164,41 @@ app.get("/directors/:directorId", (req, res) => {
  * @returns {object}
  */
 app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), (req, res) => {
-    let updated = false;
+    let passwordUpdated = !(req.user.Password === req.body.Password); // updating an email to itself is fine, but passwords must be checked due to hashing
     console.log(req.body);
     console.log(req.user);
-    if (req.body.Email) {
-        Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { Email: req.body.Email } }, { new: true });
-        updated = true;
-    }
-    if (typeof req.body.Password == "string" && req.body.Password.trim().length > 0) {
-        let unhashed = req.body.Password;
-        let hashed = Users.hashPassword(req.body.Password);
-        console.log("Current Password ", req.user.Password);
-        console.log("Hashed Password ", hashed);
-        console.log("Unhashed Password ", unhashed);
-        if (unhashed !== req.user.Password) {
-            console.log("hit");
-            Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { Password: hashed } }, { new: true });
-            updated = true;
-        } // else password is unchanged
-    }
-    if (updated) {
-        res.status(200).json("Update succeeded!");
+    // if (req.body.Email) {
+    //     Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { Email: req.body.Email } }, { new: true });
+    //     updated = true;
+    // }
+    // if (typeof req.body.Password == "string" && req.body.Password.trim().length > 0) {
+    //     let unhashed = req.body.Password;
+    //     let hashed = Users.hashPassword(req.body.Password);
+    //     if (unhashed !== req.user.Password) {
+    //         Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { Password: hashed } }, { new: true });
+    //         updated = true;
+    //     } // else password is unchanged
+    // }
+    let updatedData = {};
+    if (passwordUpdated) {
+        updatedData = {
+            Email: req.body.Email,
+            Password: Users.hashPassword(req.body.Password),
+        };
     } else {
-        res.status(400).json({ error: "Update failed!" });
+        updatedData = {
+            Email: req.body.Email,
+        };
     }
+
+    Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { updatedData } }, { new: true })
+        .then((updatedUser) => {
+            res.status(200).json(updatedUser);
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).json({ error: err });
+        });
 });
 
 /**
