@@ -167,11 +167,16 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
     console.log(req.body);
 
     if (req.body.Email) {
+        console.log("Email ", req.body.Email);
         Users.findOneAndUpdate({ _id: req.user._id }, { $set: { Email: req.body.Email } }, { new: true });
     }
     if (typeof req.body.Password == "string" && req.body.Password.trim().length > 0) {
         let newPassword = Users.hashPassword(req.body.Password);
-        Users.findOneAndUpdate({ _id: req.user._id }, { $set: { Password: newPassword } }, { new: true });
+        console.log("Password ", req.body.Password);
+        if (newPassword !== req.user.Password) {
+            console.log("hit");
+            Users.findOneAndUpdate({ _id: req.user._id }, { $set: { Password: newPassword } }, { new: true });
+        } // else password is unchanged
     }
 
     Users.findOneAndUpdate({ _id: req.user._id }, { $set: {} }, { new: true })
