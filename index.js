@@ -166,15 +166,14 @@ app.get("/directors/:directorId", (req, res) => {
 app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), (req, res) => {
     let updated = false;
     console.log(req.body);
-    console.log(req.user._id);
     if (req.body.Email) {
-        console.log("Email ", req.body.Email);
         Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { Email: req.body.Email } }, { new: true });
         updated = true;
     }
     if (typeof req.body.Password == "string" && req.body.Password.trim().length > 0) {
         let newPassword = Users.hashPassword(req.body.Password);
         console.log("Password ", req.body.Password);
+        console.log("New Password ", newPassword);
         if (newPassword !== req.user.Password) {
             console.log("hit");
             Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { Password: newPassword } }, { new: true });
