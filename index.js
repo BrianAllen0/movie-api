@@ -165,8 +165,8 @@ app.get("/directors/:directorId", (req, res) => {
  */
 app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), (req, res) => {
     let passwordUpdated = !(req.user.Password === req.body.Password); // updating an email to itself is fine, but passwords must be checked due to hashing
-    console.log(req.body);
-    console.log(req.user);
+    console.log("request body", req.body);
+    console.log("current user", req.user);
     let updatedData = {};
     if (passwordUpdated) {
         updatedData = {
@@ -179,10 +179,11 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
         };
     }
 
-    console.log(updatedData);
+    console.log("updatedData", updatedData);
 
     Users.findByIdAndUpdate(req.user._id, { updatedData }, { new: true })
         .then((updatedUser) => {
+            console.log("updatedUser", updatedUser);
             res.status(200).json(updatedUser);
         })
         .catch((err) => {
