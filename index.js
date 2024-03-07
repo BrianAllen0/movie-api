@@ -171,12 +171,14 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
         updated = true;
     }
     if (typeof req.body.Password == "string" && req.body.Password.trim().length > 0) {
-        let newPassword = Users.hashPassword(req.body.Password);
-        console.log("Password ", req.body.Password);
-        console.log("New Password ", newPassword);
-        if (newPassword !== req.user.Password) {
+        let unhashed = req.body.Password;
+        let hashed = Users.hashPassword(req.body.Password);
+        console.log("Current Password ", req.user.Password);
+        console.log("Hashed Password ", hashed);
+        console.log("Unhashed Password ", unhashed);
+        if (unhashed !== req.user.Password) {
             console.log("hit");
-            Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { Password: newPassword } }, { new: true });
+            Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { Password: hashed } }, { new: true });
             updated = true;
         } // else password is unchanged
     }
