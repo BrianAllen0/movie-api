@@ -193,7 +193,7 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
 
     console.log(updatedData);
 
-    Users.findByIdAndUpdate({ _id: req.user._id }, { $set: { updatedData } }, { new: true })
+    Users.findByIdAndUpdate({ _id: req.user._id }, { updatedData }, { new: true })
         .then((updatedUser) => {
             res.status(200).json(updatedUser);
         })
