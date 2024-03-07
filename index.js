@@ -182,7 +182,7 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
         } // else password is unchanged
     }
     if (updated) {
-        res.status(200).json(updatedUser);
+        res.status(200).json("Update succeeded!");
     } else {
         res.status(400).json({ error: "Update failed!" });
     }
