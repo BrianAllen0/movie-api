@@ -185,6 +185,7 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
         .then((updatedUser) => {
             console.log("updatedUser", updatedUser);
             res.status(200).json(updatedUser);
+            console.log("res", res);
         })
         .catch((err) => {
             console.log(err);
