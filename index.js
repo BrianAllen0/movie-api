@@ -163,7 +163,8 @@ app.get("/directors/:directorId", (req, res) => {
  * @param {string} [password]
  * @returns {object}
  */
-app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), (req, res) => {
+app.patch("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
+    //[check("Email", "A valid email is required").isEmail()],
     let passwordUpdated = !(req.user.Password === req.body.Password); // updating an email to itself is fine, but passwords must be checked due to hashing
     console.log("request body", req.body);
     console.log("current user", req.user);
