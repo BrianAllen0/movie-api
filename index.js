@@ -181,16 +181,18 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
 
     console.log("updatedData", updatedData);
 
-    Users.findByIdAndUpdate(req.user._id, { updatedData }, { new: true })
-        .then((updatedUser) => {
-            console.log("updatedUser", updatedUser);
-            res.status(200).json(updatedUser);
-            console.log("UpdateUser", res);
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(400).json({ error: err });
-        });
+    console.log(
+        Users.findByIdAndUpdate(req.user._id, { updatedData }, { new: true })
+            .then((updatedUser) => {
+                //console.log("updatedUser", updatedUser);
+                res.status(200).json(updatedUser);
+                //console.log("UpdateUser", res);
+            })
+            .catch((err) => {
+                //console.log(err);
+                res.status(400).json({ error: err });
+            })
+    );
 });
 
 /**
