@@ -185,7 +185,7 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
         .then((updatedUser) => {
             console.log("updatedUser", updatedUser);
             res.status(200).json(updatedUser);
-            console.log("res", res);
+            console.log("UpdateUser", res);
         })
         .catch((err) => {
             console.log(err);
@@ -297,6 +297,7 @@ app.post("/movies/favorites", passport.authenticate("jwt", { session: false }), 
     })
         .then(() => {
             res.status(200).json({ message: "Movie added!" });
+            console.log("AddFavoriteMovie", res);
         })
         .catch((error) => {
             console.log(error);
