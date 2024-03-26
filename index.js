@@ -164,7 +164,7 @@ app.get("/directors/:directorId", (req, res) => {
  * @returns {object}
  */
 app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), async (req, res) => {
-    let passwordUpdated = !(req.user.Password === req.body.Password);
+    let passwordUpdated = !(req.user.Password === Users.hashPassword(req.body.Password));
     //console.log("request body", req.body);
     //console.log("current user", req.user);
     let updatedData = {};
@@ -274,17 +274,22 @@ app.post(
  * Deletes an existing user
  * @name DeleteUser
  * @function
+ * @param {string} password
  * @returns {object}
  */
 app.delete("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
-    Users.findByIdAndDelete({ _id: req.user._id })
-        .then(() => {
-            return res.status(200).json({ message: "User deleted!" });
-        })
-        .catch((error) => {
-            console.log(error);
-            res.status(400).json({ error: error });
-        });
+    if (req.user.password === Users.hashPassword(req.body.Password)) {
+        Users.findByIdAndDelete({ _id: req.user._id })
+            .then(() => {
+                return res.status(200).json({ message: "User deleted!" });
+            })
+            .catch((error) => {
+                console.log(error);
+                res.status(400).json({ error: error });
+            });
+    } else {
+        res.status(400).json({ error: "Incorrect password!" });
+    }
 });
 
 /**
