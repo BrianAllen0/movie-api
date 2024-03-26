@@ -278,6 +278,8 @@ app.post(
  * @returns {object}
  */
 app.delete("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
+    console.log(req.user.Password);
+    console.log(req.body.Password);
     if (req.user.Password === Users.hashPassword(req.body.Password)) {
         Users.findByIdAndDelete({ _id: req.user._id })
             .then(() => {
