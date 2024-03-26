@@ -164,7 +164,7 @@ app.get("/directors/:directorId", (req, res) => {
  * @returns {object}
  */
 app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), async (req, res) => {
-    let passwordUpdated = !(req.user.Password === Users.hashPassword(req.body.Password));
+    let passwordUpdated = !req.user.validatePassword(req.body.Password);
     //console.log("request body", req.body);
     //console.log("current user", req.user);
     let updatedData = {};
@@ -280,7 +280,7 @@ app.post(
 app.delete("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
     console.log(req.user.Password);
     console.log(Users.hashPassword(req.body.Password));
-    if (req.user.Password === Users.hashPassword(req.body.Password)) {
+    if (req.user.validatePassword(req.body.Password)) {
         Users.findByIdAndDelete({ _id: req.user._id })
             .then(() => {
                 return res.status(200).json({ message: "User deleted!" });
