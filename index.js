@@ -278,7 +278,7 @@ app.post(
  * @returns {object}
  */
 app.delete("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
-    if (req.user.password === Users.hashPassword(req.body.Password)) {
+    if (req.user.Password === Users.hashPassword(req.body.Password)) {
         Users.findByIdAndDelete({ _id: req.user._id })
             .then(() => {
                 return res.status(200).json({ message: "User deleted!" });
