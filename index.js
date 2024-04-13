@@ -165,8 +165,6 @@ app.get("/directors/:directorId", (req, res) => {
  */
 app.patch("/user", [check("Email", "A valid email is required").isEmail()], passport.authenticate("jwt", { session: false }), async (req, res) => {
     let passwordUpdated = !req.user.validatePassword(req.body.Password);
-    //console.log("request body", req.body);
-    //console.log("current user", req.user);
     let updatedData = {};
     if (passwordUpdated) {
         updatedData = {
@@ -180,20 +178,14 @@ app.patch("/user", [check("Email", "A valid email is required").isEmail()], pass
         };
     }
 
-    console.log("updatedData", updatedData);
-
-    //console.log(
     Users.findByIdAndUpdate(req.user._id, { $set: { Email: updatedData.Email, Password: updatedData.Password } }, { new: true })
         .then((updatedUser) => {
-            console.log("updatedUser", updatedUser);
             res.status(200).json(updatedUser);
-            console.log("UpdateUser", res);
         })
         .catch((err) => {
             console.log(err);
             res.status(400).json({ error: err });
         });
-    //);
 });
 
 /**
@@ -278,8 +270,6 @@ app.post(
  * @returns {object}
  */
 app.delete("/user", passport.authenticate("jwt", { session: false }), (req, res) => {
-    console.log(req.user.Password);
-    console.log(Users.hashPassword(req.body.Password));
     if (req.user.validatePassword(req.body.Password)) {
         Users.findByIdAndDelete({ _id: req.user._id })
             .then(() => {
@@ -307,7 +297,6 @@ app.post("/movies/favorites", passport.authenticate("jwt", { session: false }), 
     })
         .then(() => {
             res.status(200).json({ message: "Movie added!" });
-            console.log("AddFavoriteMovie", res);
         })
         .catch((error) => {
             console.log(error);
