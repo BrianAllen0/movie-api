@@ -135,6 +135,24 @@ app.get("/genres/:genreId", (req, res) => {
 });
 
 /**
+ * Returns a list of all directors
+ * @name GetDirectors
+ * @function
+ * @returns {object}
+ */
+
+app.get("/directors", (req, res) => {
+    Movies.find()
+        .then((directors) => {
+            res.status(200).json(directors);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(400).json({ error: error });
+        });
+});
+
+/**
  * Returns a specific director
  * @name GetDirector
  * @function
