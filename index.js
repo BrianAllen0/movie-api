@@ -142,7 +142,7 @@ app.get("/genres/:genreId", (req, res) => {
  */
 
 app.get("/directors", (req, res) => {
-    Movies.find()
+    Directors.find()
         .then((directors) => {
             res.status(200).json(directors);
         })
