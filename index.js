@@ -114,6 +114,23 @@ app.get("/movies/:movieId", (req, res) => {
 });
 
 /**
+ * Returns a list of all genres
+ * @name GetGenres
+ * @function
+ * @return {Object}
+ */
+app.get("/genres", (req, res) => {
+    Movies.find()
+        .then((genres) => {
+            res.status(200).json(genres);
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(400).json({ error: error });
+        });
+});
+
+/**
  * Returns a specific genre
  * @name GetGenre
  * @function
