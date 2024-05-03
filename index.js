@@ -120,7 +120,7 @@ app.get("/movies/:movieId", (req, res) => {
  * @return {Object}
  */
 app.get("/genres", (req, res) => {
-    Movies.find()
+    Genres.find()
         .then((genres) => {
             res.status(200).json(genres);
         })
